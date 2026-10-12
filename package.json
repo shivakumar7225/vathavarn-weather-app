@@ -1,0 +1,22 @@
+
+{
+  "name": "weather-application-using-open-weather-map-api",
+  "version": "1.0.0",
+  "description": "Weather application using React and Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "dev:backend": "node --watch server.js",
+    "dev:frontend": "npm --prefix frontend run dev"
+  },
+  "keywords": ["weather", "react", "nodejs", "openweathermap"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1"
+  }
+}
