@@ -3,6 +3,11 @@
 > **Real-time weather intelligence powered by OpenWeatherMap API**  
 > Built with React 19 + Vite (frontend) and Node.js + Express (backend)
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-success?style=for-the-badge&logo=github)](https://shivakumar7225.github.io/vathavarn-weather-app/)
+[![Repository](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/shivakumar7225/vathavarn-weather-app)
+
+🌐 **Live Website:** [https://shivakumar7225.github.io/vathavarn-weather-app/](https://shivakumar7225.github.io/vathavarn-weather-app/)
+
 ---
 
 ## 🚀 Features
