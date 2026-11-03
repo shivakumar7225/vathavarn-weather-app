@@ -3,7 +3,7 @@
  *
  * In development: routes through the Node.js backend (http://localhost:5000)
  * In production (GitHub Pages): calls OpenWeatherMap directly using
- * a key the user enters via a prompt on first visit.
+ * the bundled public OpenWeatherMap API key.
  */
 
 const IS_PRODUCTION =
@@ -12,19 +12,12 @@ const IS_PRODUCTION =
 
 const BACKEND_URL = "http://localhost:5000";
 
-// ── API key management (production only) ────────────────────────────
+// Public OpenWeatherMap API key bundled for the GitHub Pages deployment
+const DEFAULT_API_KEY = "a9bdd20fbcd1bf4cc9c74f72067d82e9";
 const STORAGE_KEY = "vathavarn_owm_key";
 
-export function getStoredApiKey() {
-  return localStorage.getItem(STORAGE_KEY) || "";
-}
-
-export function setStoredApiKey(key) {
-  localStorage.setItem(STORAGE_KEY, key);
-}
-
-export function clearStoredApiKey() {
-  localStorage.removeItem(STORAGE_KEY);
+export function getApiKey() {
+  return localStorage.getItem(STORAGE_KEY) || DEFAULT_API_KEY;
 }
 
 export function isProduction() {
@@ -47,10 +40,8 @@ export async function fetchWeather({ city, lat, lon, units = "metric" }) {
     return data;
   }
 
-  // Production — call OpenWeatherMap directly
-  const apiKey = getStoredApiKey();
-  if (!apiKey) throw new Error("API_KEY_REQUIRED");
-
+  // Production — call OpenWeatherMap directly with the public key
+  const apiKey = getApiKey();
   const params = new URLSearchParams({ appid: apiKey, units });
   if (lat !== undefined && lon !== undefined) {
     params.set("lat", lat);
@@ -68,10 +59,6 @@ export async function fetchWeather({ city, lat, lon, units = "metric" }) {
   const forecastData = await forecastRes.json();
 
   if (!currentRes.ok) {
-    if (currentRes.status === 401) {
-      clearStoredApiKey();
-      throw new Error("API_KEY_REQUIRED");
-    }
     throw new Error(currentData.message || "Unable to fetch current weather.");
   }
 
@@ -130,9 +117,7 @@ export async function searchCities(query) {
     return [];
   }
 
-  const apiKey = getStoredApiKey();
-  if (!apiKey) return [];
-
+  const apiKey = getApiKey();
   const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
     query
   )}&limit=5&appid=${apiKey}`;
@@ -146,7 +131,6 @@ export function getMapTileUrl(layer) {
   if (!IS_PRODUCTION) {
     return `${BACKEND_URL}/api/map/tiles/${layer}/{z}/{x}/{y}.png`;
   }
-  const apiKey = getStoredApiKey();
+  const apiKey = getApiKey();
   return `https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=${apiKey}`;
 }
-
