@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Layers, Thermometer, CloudRain, Cloud, Wind, Gauge, ZoomIn, ZoomOut, Compass } from "lucide-react";
+import { getMapTileUrl } from "../weatherApi";
 
 // Fix standard Leaflet default marker icons for Vite bundler
 delete L.Icon.Default.prototype._getIconUrl;
@@ -74,7 +75,7 @@ export default function WeatherMapView({ coord, cityName, currentTemp, tempUnit 
       map.removeLayer(weatherLayerRef.current);
     }
 
-    const tileUrl = `http://localhost:5000/api/map/tiles/${activeLayer}/{z}/{x}/{y}.png`;
+    const tileUrl = getMapTileUrl(activeLayer);
     const newLayer = L.tileLayer(tileUrl, {
       opacity: opacity,
       maxZoom: 18,

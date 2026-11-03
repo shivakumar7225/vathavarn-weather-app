@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, MapPin, Compass, BarChart3, Map, CloudSun, Loader2 } from "lucide-react";
+import { searchCities } from "../weatherApi";
 
 export default function Navbar({
   activeTab,
@@ -40,14 +41,9 @@ export default function Navbar({
     searchTimeoutRef.current = setTimeout(async () => {
       try {
         setSearching(true);
-        const res = await fetch(
-          `http://localhost:5000/api/search?q=${encodeURIComponent(query.trim())}`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setSuggestions(Array.isArray(data) ? data : []);
-          setShowSuggestions(true);
-        }
+        const data = await searchCities(query.trim());
+        setSuggestions(Array.isArray(data) ? data : []);
+        setShowSuggestions(true);
       } catch (err) {
         console.error("Autocomplete error:", err);
       } finally {
